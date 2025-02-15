@@ -1,8 +1,158 @@
- const canvas = document.getElementById('gameCanvas');
+// 获取 DOM 元素
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreText = document.getElementById('scoreText');
+const highScoreText = document.getElementById('highScoreText');
+const startButton = document.getElementById('startButton');
+const pauseButton = document.getElementById('pauseButton');
+const difficultySelect = document.getElementById('difficulty');
+const eatSound = document.getElementById('eatSound');
+const gameOverSound = document.getElementById('gameOverSound');
+
+// 游戏配置
+const gridSize = 20;
+const tileCount = canvas.width / gridSize;
+let gameSpeed = 100;
+let isPaused = false;
+let highScore = localStorage.getItem('snakeHighScore') || 0;
+highScoreText.textContent = highScore; 
+const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreText = document.getElementById('scoreText');
 const startButton = document.getElementById('startButton');
 
+// 设置游戏难度
+difficultySelect.addEventListener('change', () => {
+    switch(difficultySelect.value) {
+        case 'easy':
+            gameSpeed = 120;
+            break;
+        case 'normal':
+            gameSpeed = 100;
+            break;
+        case 'hard':
+            gameSpeed = 80;
+            break;
+    }
+    if (gameRunning) {
+        clearInterval(gameInterval);
+        gameInterval = setInterval(gameLoop, gameSpeed);
+    }
+});
+
+// 暂停功能
+pauseButton.addEventListener('click', togglePause);
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        togglePause();
+    }
+});
+
+function togglePause() {
+    if (!gameRunning) return;
+    
+    if (isPaused) {
+        gameInterval = setInterval(gameLoop, gameSpeed);
+        pauseButton.textContent = '暂停';
+    } else {
+        clearInterval(gameInterval);
+        pauseButton.textContent = '继续';
+    }
+    isPaused = !isPaused;
+}
+
+// 设置游戏难度
+difficultySelect.addEventListener('change', () => {
+    switch(difficultySelect.value) {
+        case 'easy':
+            gameSpeed = 120;
+            break;
+        case 'normal':
+            gameSpeed = 100;
+            break;
+        case 'hard':
+            gameSpeed = 80;
+            break;
+    }
+    if (gameRunning) {
+        clearInterval(gameInterval);
+        gameInterval = setInterval(gameLoop, gameSpeed);
+    }
+});
+
+// 暂停功能
+pauseButton.addEventListener('click', togglePause);
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        togglePause();
+    }
+});
+
+function togglePause() {
+    if (!gameRunning) return;
+    
+    if (isPaused) {
+        gameInterval = setInterval(gameLoop, gameSpeed);
+        pauseButton.textContent = '暂停';
+    } else {
+        clearInterval(gameInterval);
+        pauseButton.textContent = '继续';
+    }
+    isPaused = !isPaused;
+}
+
+// 更新 checkFood 函数
+function checkFood() {
+    const head = snake[0];
+    if (head.x === food.x && head.y === food.y) {
+        eatSound.play();
+        score += 10;
+        scoreText.textContent = score;
+        if (score > highScore) {
+            highScore = score;
+            highScoreText.textContent = highScore;
+            localStorage.setItem('snakeHighScore', highScore);
+        }
+        food = generateFood();
+        return true;
+    }
+    return false;
+}
+
+// 更新 endGame 函数
+function endGame() {
+    gameOverSound.play();
+    clearInterval(gameInterval);
+    gameRunning = false;
+    startButton.textContent = '开始游戏';
+    alert(`游戏结束！\n当前得分：${score}\n最高分：${highScore}`);
+}
+// 移动端控制
+document.getElementById('upButton').addEventListener('click', () => {
+    if (dy !== 1 && !isPaused) { dx = 0; dy = -1; }
+});
+document.getElementById('downButton').addEventListener('click', () => {
+    if (dy !== -1 && !isPaused) { dx = 0; dy = 1; }
+});
+document.getElementById('leftButton').addEventListener('click', () => {
+    if (dx !== 1 && !isPaused) { dx = -1; dy = 0; }
+});
+document.getElementById('rightButton').addEventListener('click', () => {
+    if (dx !== -1 && !isPaused) { dx = 1; dy = 0; }
+});
+// 移动端控制
+document.getElementById('upButton').addEventListener('click', () => {
+    if (dy !== 1 && !isPaused) { dx = 0; dy = -1; }
+});
+document.getElementById('downButton').addEventListener('click', () => {
+    if (dy !== -1 && !isPaused) { dx = 0; dy = 1; }
+});
+document.getElementById('leftButton').addEventListener('click', () => {
+    if (dx !== 1 && !isPaused) { dx = -1; dy = 0; }
+});
+document.getElementById('rightButton').addEventListener('click', () => {
+    if (dx !== -1 && !isPaused) { dx = 1; dy = 0; }
+});
 // 设置画布大小
 canvas.width = 400;
 canvas.height = 400;
