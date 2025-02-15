@@ -278,3 +278,53 @@ document.addEventListener('keydown', (event) => {
 });
 
 startButton.addEventListener('click', startGame);
+// 音效和音乐控制
+const bgMusic = document.getElementById('bgMusic');
+const soundToggle = document.getElementById('soundToggle');
+const musicToggle = document.getElementById('musicToggle');
+
+// 音效控制
+soundToggle.addEventListener('change', () => {
+    eatSound.muted = !soundToggle.checked;
+    gameOverSound.muted = !soundToggle.checked;
+});
+
+// 背景音乐控制
+musicToggle.addEventListener('change', () => {
+    if (musicToggle.checked) {
+        bgMusic.play();
+    } else {
+        bgMusic.pause();
+    }
+});
+
+// 更新开始游戏函数
+function startGame() {
+    if (gameRunning) return;
+    
+    snake = [{ x: 10, y: 10 }];
+    food = generateFood();
+    dx = 0;
+    dy = 0;
+    score = 0;
+    scoreText.textContent = score;
+    gameRunning = true;
+    gameInterval = setInterval(gameLoop, gameSpeed);
+    startButton.textContent = '重新开始';
+    
+    // 如果音乐开关打开，开始播放背景音乐
+    if (musicToggle.checked) {
+        bgMusic.play();
+    }
+}
+
+// 更新结束游戏函数
+function endGame() {
+    gameOverSound.play();
+    clearInterval(gameInterval);
+    gameRunning = false;
+    startButton.textContent = '开始游戏';
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    alert(`游戏结束！\n当前得分：${score}\n最高分：${highScore}`);
+}
