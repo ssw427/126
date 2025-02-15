@@ -328,3 +328,21 @@ function endGame() {
     bgMusic.currentTime = 0;
     alert(`游戏结束！\n当前得分：${score}\n最高分：${highScore}`);
 }
+canvas {
+    border: 3px solid #333;
+    border-radius: 10px;
+    background-color: #000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+    display: block; /* 确保画布正确显示 */
+}
+
+.game-container {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: 0 auto;
+}
