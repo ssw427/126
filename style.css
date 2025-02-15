@@ -137,3 +137,66 @@ canvas {
         display: none;
     }
 }
+/* 设置控件样式 */
+.settings {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.settings label {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.settings input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* 游戏说明样式 */
+.instructions {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    text-align: left;
+}
+
+.instructions h3 {
+    margin: 0 0 10px 0;
+    color: #4CAF50;
+    text-align: center;
+}
+
+.instructions p {
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* 移动端适配优化 */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+    }
+
+    .settings {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .instructions {
+        font-size: 12px;
+    }
+}
